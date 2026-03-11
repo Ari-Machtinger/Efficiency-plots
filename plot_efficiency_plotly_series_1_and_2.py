@@ -2,16 +2,15 @@ import pandas as pd
 import plotly.graph_objects as go
 import numpy as np
 
-# Load both datasets
-file1 = "Madison analysis for chamber study virus series - Virus test series 1.tsv"
-file2 = "Madison analysis for chamber study virus series - Virus test series 2.tsv"
-df1 = pd.read_csv(file1, sep='\t')
-df2 = pd.read_csv(file2, sep='\t')
+# Use Series 1 data from provided CSV attachment
+csv_file = 'Madison analysis for chamber study virus series.csv'
+df1 = pd.read_csv(csv_file)
 
 samplers = ['AerosolSense', 'Apollo', 'Cub']
 
+# Fixed SettingWithCopyWarning by using .loc for assignment
 def filter_df(df):
-    df = df[df['Sample'].apply(lambda x: any(s in x for s in samplers) and 'SKC' not in x and 'blank' not in x)]
+    df = df[df['Sample'].apply(lambda x: isinstance(x, str) and any(s in x for s in samplers) and 'SKC' not in x and 'blank' not in x)]
     def get_dose(sample):
         if 'low dose' in sample:
             return 'Low Dose'
@@ -19,19 +18,19 @@ def filter_df(df):
             return 'High Dose'
         else:
             return None
-    df['Dose'] = df['Sample'].apply(get_dose)
+    df.loc[:, 'Dose'] = df['Sample'].apply(get_dose)
     df = df[df['Dose'].notnull()]
     def get_sampler(sample):
         for s in samplers:
             if s in sample:
                 return s
         return None
-    df['Sampler'] = df['Sample'].apply(get_sampler)
-    df['Efficiency'] = pd.to_numeric(df['Efficiency of capture based on APS'], errors='coerce') * 100
+    df.loc[:, 'Sampler'] = df['Sample'].apply(get_sampler)
+    df.loc[:, 'Efficiency'] = pd.to_numeric(df['Efficiency of capture based on APS'], errors='coerce') * 100
     return df
 
+# Only process Series 1 data
 df1 = filter_df(df1)
-df2 = filter_df(df2)
 
 def build_plot_df(df, series_label):
     plot_df = []
@@ -98,6 +97,10 @@ fig.add_trace(go.Scatter(
     name='Data Points',
     showlegend=False
 ))
+# Save figure as PNG
+fig.write_image("test png series 1 9_6.png")
+# Save figure as PNG
+fig.write_image("test png series 1 9_6.png")
 
 # Build custom tick positions and labels for x axis
 sampler_annotations = []
@@ -150,3 +153,14 @@ for ann in sampler_annotations:
     )
 fig.write_image("efficiency_plot_series_1.svg")
 fig.show()
+
+# Save figure as an HTML file
+html_file = "series_1_10_2.html"
+fig.write_html(html_file)
+
+# Open the HTML file in Google Chrome
+import webbrowser
+# Explicitly specify the path to Google Chrome on macOS
+chrome_path = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+webbrowser.register("chrome", None, webbrowser.BackgroundBrowser(chrome_path))
+webbrowser.get("chrome").open(html_file)

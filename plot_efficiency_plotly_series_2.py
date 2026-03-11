@@ -1,9 +1,10 @@
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
+import os
 
 # Load the data
-file_path = "Madison analysis for chamber study virus series - Virus test series 2.tsv"
+file_path = "/Users/mach_admin/Downloads/Thesis committee meetings/1st meeting/Data/Efficiency plots/Madison analysis for chamber study virus series - Virus test series 2.tsv"
 df = pd.read_csv(file_path, sep='\t')
 
 # Filter out SKC rows and blanks
@@ -194,5 +195,10 @@ for sampler in samplers:
 
 # Format y-axis: 0-100, ticks every 10, show as percent labels
 fig.update_yaxes(title='Efficiency', title_font={'size': 36}, range=[0, 60], showgrid=True, tickvals=np.arange(0, 70, 10), ticktext=[f"{i}%" for i in range(0, 70, 10)])
-fig.write_html("efficiency_plot_series_2.html")
-print("Plot saved as efficiency_plot_series_2.html")
+output_dir = "/Users/mach_admin/Downloads/Thesis committee meetings/1st meeting/Data/Efficiency plots/"
+print(f"Saving files to: {output_dir}")
+# Save the plot as an SVG file
+svg_file = output_dir + "poster_virus_mini-Heart_lo_flow.svg"
+fig.write_image(svg_file)
+
+print("Plot saved as poster_virus_mini-Heart_lo_flow.svg")
