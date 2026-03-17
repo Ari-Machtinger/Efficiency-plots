@@ -2,36 +2,118 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-OUTPUT_SVG = "inkfish_virus_salter_0_70.svg"
-OUTPUT_VALUES_CSV = "inkfish_virus_salter_exact_values.csv"
+plt.rcParams["svg.fonttype"] = "none"
+plt.rcParams["font.family"] = "Arial"
 
 SAMPLERS = ["AerosolSense", "Apollo", "Cub"]
 DOSE_ORDER = ["Low", "High"]
-POINT_COLOR = "#1f3cff"
 DOSE_POINT_COLOR = {"Low": "#1f3cff", "High": "#ff1a1a"}
 
+GRAPHS = [
+    {
+        "title": "RoD by sampler for inactivated\nSARS-CoV-2, Salter",
+        "output_svg": "RoD by sampler for inactivated SARS-CoV-2, Salter.svg",
+        "output_csv": "RoD by sampler for inactivated SARS-CoV-2, Salter.csv",
+        "records": [
+            {"Sampler": "AerosolSense", "Dose": "Low",  "replicate": 1, "rod_percent": 10.7, "average_percent": 8.1},
+            {"Sampler": "AerosolSense", "Dose": "Low",  "replicate": 2, "rod_percent":  4.8, "average_percent": 8.1},
+            {"Sampler": "AerosolSense", "Dose": "Low",  "replicate": 3, "rod_percent":  8.9, "average_percent": 8.1},
+            {"Sampler": "AerosolSense", "Dose": "High", "replicate": 1, "rod_percent": 10.4, "average_percent": 5.9},
+            {"Sampler": "AerosolSense", "Dose": "High", "replicate": 2, "rod_percent":  1.3, "average_percent": 5.9},
+            {"Sampler": "AerosolSense", "Dose": "High", "replicate": 3, "rod_percent": np.nan, "average_percent": 5.9},
+            {"Sampler": "Apollo",       "Dose": "Low",  "replicate": 1, "rod_percent":  0.3, "average_percent": 0.4},
+            {"Sampler": "Apollo",       "Dose": "Low",  "replicate": 2, "rod_percent":  0.7, "average_percent": 0.4},
+            {"Sampler": "Apollo",       "Dose": "Low",  "replicate": 3, "rod_percent":  0.1, "average_percent": 0.4},
+            {"Sampler": "Apollo",       "Dose": "High", "replicate": 1, "rod_percent":  0.4, "average_percent": 0.4},
+            {"Sampler": "Apollo",       "Dose": "High", "replicate": 2, "rod_percent":  0.5, "average_percent": 0.4},
+            {"Sampler": "Apollo",       "Dose": "High", "replicate": 3, "rod_percent":  0.2, "average_percent": 0.4},
+            {"Sampler": "Cub",          "Dose": "Low",  "replicate": 1, "rod_percent": 12.0, "average_percent": 11.4},
+            {"Sampler": "Cub",          "Dose": "Low",  "replicate": 2, "rod_percent":  7.7, "average_percent": 11.4},
+            {"Sampler": "Cub",          "Dose": "Low",  "replicate": 3, "rod_percent": 14.5, "average_percent": 11.4},
+            {"Sampler": "Cub",          "Dose": "High", "replicate": 1, "rod_percent": 55.3, "average_percent": 29.7},
+            {"Sampler": "Cub",          "Dose": "High", "replicate": 2, "rod_percent": 30.0, "average_percent": 29.7},
+            {"Sampler": "Cub",          "Dose": "High", "replicate": 3, "rod_percent":  3.7, "average_percent": 29.7},
+        ],
+    },
+    {
+        "title": "RoD by sampler for inactivated\nSARS-CoV-2, MiniHEART Lo-Flo",
+        "output_svg": "RoD by sampler for inactivated SARS-CoV-2, MiniHEART Lo-Flo.svg",
+        "output_csv": "RoD by sampler for inactivated SARS-CoV-2, MiniHEART Lo-Flo.csv",
+        "records": [
+            {"Sampler": "AerosolSense", "Dose": "Low",  "replicate": 1, "rod_percent":  2.7, "average_percent": 4.7},
+            {"Sampler": "AerosolSense", "Dose": "Low",  "replicate": 2, "rod_percent":  4.1, "average_percent": 4.7},
+            {"Sampler": "AerosolSense", "Dose": "Low",  "replicate": 3, "rod_percent":  7.2, "average_percent": 4.7},
+            {"Sampler": "AerosolSense", "Dose": "High", "replicate": 1, "rod_percent":  3.1, "average_percent": 3.4},
+            {"Sampler": "AerosolSense", "Dose": "High", "replicate": 2, "rod_percent":  2.9, "average_percent": 3.4},
+            {"Sampler": "AerosolSense", "Dose": "High", "replicate": 3, "rod_percent":  4.3, "average_percent": 3.4},
+            {"Sampler": "Apollo",       "Dose": "Low",  "replicate": 1, "rod_percent":  2.4, "average_percent": 4.9},
+            {"Sampler": "Apollo",       "Dose": "Low",  "replicate": 2, "rod_percent":  1.6, "average_percent": 4.9},
+            {"Sampler": "Apollo",       "Dose": "Low",  "replicate": 3, "rod_percent": 10.7, "average_percent": 4.9},
+            {"Sampler": "Apollo",       "Dose": "High", "replicate": 1, "rod_percent":  1.2, "average_percent": 1.1},
+            {"Sampler": "Apollo",       "Dose": "High", "replicate": 2, "rod_percent":  0.5, "average_percent": 1.1},
+            {"Sampler": "Apollo",       "Dose": "High", "replicate": 3, "rod_percent":  1.7, "average_percent": 1.1},
+            {"Sampler": "Cub",          "Dose": "Low",  "replicate": 1, "rod_percent": 19.6, "average_percent": 21.3},
+            {"Sampler": "Cub",          "Dose": "Low",  "replicate": 2, "rod_percent": 24.3, "average_percent": 21.3},
+            {"Sampler": "Cub",          "Dose": "Low",  "replicate": 3, "rod_percent": 19.9, "average_percent": 21.3},
+            {"Sampler": "Cub",          "Dose": "High", "replicate": 1, "rod_percent": 11.9, "average_percent": 10.6},
+            {"Sampler": "Cub",          "Dose": "High", "replicate": 2, "rod_percent":  6.3, "average_percent": 10.6},
+            {"Sampler": "Cub",          "Dose": "High", "replicate": 3, "rod_percent": 13.5, "average_percent": 10.6},
+        ],
+    },
+    {
+        "title": "RoD by sampler for\n0.5 µm PSL beads",
+        "output_svg": "RoD by sampler for 0.5 µm PSL beads.svg",
+        "output_csv": "RoD by sampler for 0.5 µm PSL beads.csv",
+        "records": [
+            {"Sampler": "AerosolSense", "Dose": "Low",  "replicate": 1, "rod_percent":  1.0, "average_percent": 0.6},
+            {"Sampler": "AerosolSense", "Dose": "Low",  "replicate": 2, "rod_percent":  0.4, "average_percent": 0.6},
+            {"Sampler": "AerosolSense", "Dose": "Low",  "replicate": 3, "rod_percent":  0.4, "average_percent": 0.6},
+            {"Sampler": "AerosolSense", "Dose": "High", "replicate": 1, "rod_percent":  0.6, "average_percent": 0.4},
+            {"Sampler": "AerosolSense", "Dose": "High", "replicate": 2, "rod_percent":  0.3, "average_percent": 0.4},
+            {"Sampler": "AerosolSense", "Dose": "High", "replicate": 3, "rod_percent":  0.3, "average_percent": 0.4},
+            {"Sampler": "Apollo",       "Dose": "Low",  "replicate": 1, "rod_percent":  1.0, "average_percent": 0.9},
+            {"Sampler": "Apollo",       "Dose": "Low",  "replicate": 2, "rod_percent":  0.9, "average_percent": 0.9},
+            {"Sampler": "Apollo",       "Dose": "Low",  "replicate": 3, "rod_percent":  0.9, "average_percent": 0.9},
+            {"Sampler": "Apollo",       "Dose": "High", "replicate": 1, "rod_percent":  0.8, "average_percent": 0.7},
+            {"Sampler": "Apollo",       "Dose": "High", "replicate": 2, "rod_percent":  0.5, "average_percent": 0.7},
+            {"Sampler": "Apollo",       "Dose": "High", "replicate": 3, "rod_percent":  0.7, "average_percent": 0.7},
+            {"Sampler": "Cub",          "Dose": "Low",  "replicate": 1, "rod_percent": 41.0, "average_percent": 46.8},
+            {"Sampler": "Cub",          "Dose": "Low",  "replicate": 2, "rod_percent": 52.0, "average_percent": 46.8},
+            {"Sampler": "Cub",          "Dose": "Low",  "replicate": 3, "rod_percent": 47.3, "average_percent": 46.8},
+            {"Sampler": "Cub",          "Dose": "High", "replicate": 1, "rod_percent": 56.9, "average_percent": 56.7},
+            {"Sampler": "Cub",          "Dose": "High", "replicate": 2, "rod_percent": 66.7, "average_percent": 56.7},
+            {"Sampler": "Cub",          "Dose": "High", "replicate": 3, "rod_percent": 46.6, "average_percent": 56.7},
+        ],
+    },
+    {
+        "title": "RoD by sampler for\n1 µm PSL beads",
+        "output_svg": "RoD by sampler for 1 µm PSL beads.svg",
+        "output_csv": "RoD by sampler for 1 µm PSL beads.csv",
+        "records": [
+            {"Sampler": "AerosolSense", "Dose": "Low",  "replicate": 1, "rod_percent":  2.4, "average_percent": 1.9},
+            {"Sampler": "AerosolSense", "Dose": "Low",  "replicate": 2, "rod_percent":  0.8, "average_percent": 1.9},
+            {"Sampler": "AerosolSense", "Dose": "Low",  "replicate": 3, "rod_percent":  2.6, "average_percent": 1.9},
+            {"Sampler": "AerosolSense", "Dose": "High", "replicate": 1, "rod_percent":  6.6, "average_percent": 4.3},
+            {"Sampler": "AerosolSense", "Dose": "High", "replicate": 2, "rod_percent":  2.1, "average_percent": 4.3},
+            {"Sampler": "AerosolSense", "Dose": "High", "replicate": 3, "rod_percent":  4.1, "average_percent": 4.3},
+            {"Sampler": "Apollo",       "Dose": "Low",  "replicate": 1, "rod_percent":  0.9, "average_percent": 1.0},
+            {"Sampler": "Apollo",       "Dose": "Low",  "replicate": 2, "rod_percent":  1.2, "average_percent": 1.0},
+            {"Sampler": "Apollo",       "Dose": "Low",  "replicate": 3, "rod_percent":  0.9, "average_percent": 1.0},
+            {"Sampler": "Apollo",       "Dose": "High", "replicate": 1, "rod_percent":  0.5, "average_percent": 0.6},
+            {"Sampler": "Apollo",       "Dose": "High", "replicate": 2, "rod_percent":  0.6, "average_percent": 0.6},
+            {"Sampler": "Apollo",       "Dose": "High", "replicate": 3, "rod_percent":  0.6, "average_percent": 0.6},
+            {"Sampler": "Cub",          "Dose": "Low",  "replicate": 1, "rod_percent": 49.2, "average_percent": 47.6},
+            {"Sampler": "Cub",          "Dose": "Low",  "replicate": 2, "rod_percent": 44.7, "average_percent": 47.6},
+            {"Sampler": "Cub",          "Dose": "Low",  "replicate": 3, "rod_percent": 48.9, "average_percent": 47.6},
+            {"Sampler": "Cub",          "Dose": "High", "replicate": 1, "rod_percent": 53.7, "average_percent": 47.8},
+            {"Sampler": "Cub",          "Dose": "High", "replicate": 2, "rod_percent": 45.9, "average_percent": 47.8},
+            {"Sampler": "Cub",          "Dose": "High", "replicate": 3, "rod_percent": 43.8, "average_percent": 47.8},
+        ],
+    },
+]
 
-def build_values():
-    records = [
-        {"Sampler": "AerosolSense", "Dose": "Low", "replicate": 1, "rod_percent": 10.4, "average_percent": 8.1},
-        {"Sampler": "AerosolSense", "Dose": "Low", "replicate": 2, "rod_percent": 4.8, "average_percent": 8.1},
-        {"Sampler": "AerosolSense", "Dose": "Low", "replicate": 3, "rod_percent": 8.9, "average_percent": 8.1},
-        {"Sampler": "AerosolSense", "Dose": "High", "replicate": 1, "rod_percent": 10.4, "average_percent": 5.9},
-        {"Sampler": "AerosolSense", "Dose": "High", "replicate": 2, "rod_percent": 1.3, "average_percent": 5.9},
-        {"Sampler": "AerosolSense", "Dose": "High", "replicate": 3, "rod_percent": np.nan, "average_percent": 5.9},
-        {"Sampler": "Apollo", "Dose": "Low", "replicate": 1, "rod_percent": 0.3, "average_percent": 0.4},
-        {"Sampler": "Apollo", "Dose": "Low", "replicate": 2, "rod_percent": 0.7, "average_percent": 0.4},
-        {"Sampler": "Apollo", "Dose": "Low", "replicate": 3, "rod_percent": 0.1, "average_percent": 0.4},
-        {"Sampler": "Apollo", "Dose": "High", "replicate": 1, "rod_percent": 0.4, "average_percent": 0.4},
-        {"Sampler": "Apollo", "Dose": "High", "replicate": 2, "rod_percent": 0.5, "average_percent": 0.4},
-        {"Sampler": "Apollo", "Dose": "High", "replicate": 3, "rod_percent": 0.2, "average_percent": 0.4},
-        {"Sampler": "Cub", "Dose": "Low", "replicate": 1, "rod_percent": 12.0, "average_percent": 11.4},
-        {"Sampler": "Cub", "Dose": "Low", "replicate": 2, "rod_percent": 7.7, "average_percent": 11.4},
-        {"Sampler": "Cub", "Dose": "Low", "replicate": 3, "rod_percent": 14.5, "average_percent": 11.4},
-        {"Sampler": "Cub", "Dose": "High", "replicate": 1, "rod_percent": 55.3, "average_percent": 29.7},
-        {"Sampler": "Cub", "Dose": "High", "replicate": 2, "rod_percent": 30.0, "average_percent": 29.7},
-        {"Sampler": "Cub", "Dose": "High", "replicate": 3, "rod_percent": 3.7, "average_percent": 29.7},
-    ]
+
+def build_values(records):
     df = pd.DataFrame(records)
     df["Dose"] = pd.Categorical(df["Dose"], categories=DOSE_ORDER, ordered=True)
     return df
@@ -63,8 +145,8 @@ def jitter_for_group(group):
     return {int(idx): offsets[i] for i, idx in enumerate(sorted_idx)}
 
 
-def main():
-    values_df = build_values()
+def make_graph(title, output_svg, output_csv, records):
+    values_df = build_values(records)
 
     sampler_to_base = {sampler: index for index, sampler in enumerate(SAMPLERS)}
     dose_offset = {"Low": -0.22, "High": 0.22}
@@ -74,7 +156,7 @@ def main():
     )
 
     values_df["x_jitter"] = 0.0
-    for (_, _), group in values_df.groupby(["Sampler", "Dose"], sort=False):
+    for (_, _), group in values_df.groupby(["Sampler", "Dose"], sort=False, observed=False):
         jitter_map = jitter_for_group(group)
         for idx, jitter_value in jitter_map.items():
             values_df.loc[idx, "x_jitter"] = jitter_value
@@ -89,7 +171,7 @@ def main():
     ax.grid(axis="y", color="white", linewidth=1.2, alpha=0.6, zorder=0)
     ax.grid(axis="x", visible=False)
 
-    for (sampler, dose), group in values_df.groupby(["Sampler", "Dose"], sort=False):
+    for (sampler, dose), group in values_df.groupby(["Sampler", "Dose"], sort=False, observed=False):
         present = group[group["rod_percent"].notna()]
         center_x = float(group["x_center"].iloc[0])
         average_val = float(group["average_percent"].iloc[0])
@@ -132,7 +214,7 @@ def main():
     ax.set_yticklabels([f"{v}%" for v in range(0, 71, 10)], fontsize=12, color="#334a6b")
 
     ax.set_ylabel("RoD (%)", fontsize=34, color="#223a5e")
-    ax.set_title("RoD by sampler for inactivated\nSARS-CoV-2, Salter", fontsize=30, weight="bold", color="#223a5e")
+    ax.set_title(title, fontsize=28, weight="bold", color="#223a5e")
 
     for spine in ["top", "right", "left", "bottom"]:
         ax.spines[spine].set_visible(False)
@@ -140,19 +222,31 @@ def main():
     ax.tick_params(axis="y", length=0)
 
     fig.tight_layout()
-    fig.savefig(OUTPUT_SVG, format="svg", dpi=300)
+    fig.savefig(output_svg, format="svg", dpi=300)
+    plt.close(fig)
 
     export_df = values_df[["Sampler", "Dose", "replicate", "rod_percent", "average_percent", "x_position"]].copy()
     export_df["point_color"] = export_df["Dose"].astype(str).map(DOSE_POINT_COLOR)
     export_df["included_in_plot"] = export_df["rod_percent"].notna()
-    export_df.to_csv(OUTPUT_VALUES_CSV, index=False)
+    export_df.to_csv(output_csv, index=False)
 
     with pd.option_context("display.max_rows", None, "display.max_columns", None):
+        print(f"\n--- {title.replace(chr(10), ' ')} ---")
         print("Exact values used:")
         print(export_df.to_string(index=False))
 
-    print(f"\nSVG written: {OUTPUT_SVG}")
-    print(f"Values written: {OUTPUT_VALUES_CSV}")
+    print(f"SVG written: {output_svg}")
+    print(f"Values written: {output_csv}")
+
+
+def main():
+    for graph in GRAPHS:
+        make_graph(
+            title=graph["title"],
+            output_svg=graph["output_svg"],
+            output_csv=graph["output_csv"],
+            records=graph["records"],
+        )
 
 
 if __name__ == "__main__":
